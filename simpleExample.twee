@@ -1,0 +1,16 @@
+:: Start
+This is the Start - if it is missing use the first passage you find.
+[A Passage]
+
+:: A Passage
+This is the description of the passage.
+[Another Passage]
+
+:: Another Passage
+This is another test passage.
+[return home|A Passage]
+[A Secret Passage]
+
+:: A Secret Passage
+This uses a different kind of link text.
+[return home->A Passage]
