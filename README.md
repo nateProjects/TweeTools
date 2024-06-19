@@ -39,4 +39,4 @@ Note: for Twee includes you could just `cat *.twee > combined.twee`
 
 ## Why PERL?
 
-Because it is pre-installed on MacoS, Linux, and te default Windows WSL.
+Because it is pre-installed on MacoS, Linux, and the default Windows WSL.
