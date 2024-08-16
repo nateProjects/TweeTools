@@ -7,7 +7,7 @@ Export Twee games to Markdown
 
 Shuffle Twee game passages for book usage
 
-[Export Twee to Canvas](Twee-Canvas-Converter) format or Canvas format to Twee
+[Export Twee to Canvas](Canvas) format or Canvas format to Twee
 
 ## Scripts -
 
