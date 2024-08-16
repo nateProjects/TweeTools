@@ -1,7 +1,13 @@
 # TweeTools
-Some Tools For Twee &amp; Twine
+**Some Tools For Twee &amp; Twine**
 
-I needed a simple page randomiser for a choice-based narrative game and got carried away.
+Play Twee games from the commandline or [web browser](Twish)
+
+Export Twee games to Markdown
+
+Shuffle Twee game passages for book usage
+
+[Export Twee to Canvas](Twee-Canvas-Converter) format or Canvas format to Twee
 
 ## Scripts -
 
@@ -37,12 +43,8 @@ Followed by a description
 
 Note: for Twee includes you could just `cat *.twee > combined.twee`
 
-## Why PERL?
-
-Because it is pre-installed on MacoS, Linux, and the default Windows WSL.
-
-# twish
-Twee-ish Gamebook Web Rendering
+# Twish
+**Twee-ish Gamebook Web Rendering**
 
 ## Usage -
 
@@ -56,3 +58,20 @@ Text <b>description</b><br>
 (if: $animal is "horse")[[$animal]]
 ```
 
+# Twee-Canvas-Converter
+**Converts Twee files to JSON Canvas format or Canvas format to Twee files**
+
+See - https://github.com/obsidianmd/jsoncanvas
+
+## Usage
+
+`./twee_canvas_convert TestCanvas.twee`
+or
+`./twee_canvas_convert TestCanvas.canvas`
+
+## Resources
+
+* Web Editor - https://hi-canvas.marknoteapp.com/
+* Web Editor / Converter - https://flowchart.fun/
+* Mermaid convert - https://alexwiench.github.io/json-canvas-to-mermaid-demo/
+* Obsidian Usage - https://help.obsidian.md/Plugins/Canvas#:~:text=Obsidian%20stores%20your%20canvas%20data,file%20format%20called%20JSON%20Canvas.
