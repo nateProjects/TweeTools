@@ -1,0 +1,26 @@
+:: StoryTitle
+Canvas
+
+:: StoryData
+{
+  "ifid": "YOUR-IFID-HERE",
+  "format": "Harlowe",
+  "format-version": "3.3.9",
+  "start": "Start Passage",
+  "zoom": 1
+}
+
+:: Start Passage {"position":"705,325","size":"250,60"}
+[[Passage Two]]
+
+
+:: Passage Two {"position":"705,445","size":"250,60"}
+[[Passage Three]]
+
+
+:: Passage Three {"position":"705,565","size":"250,60"}
+[[End Passage]]
+[[Passage Two]]
+
+
+:: End Passage {"position":"705,685","size":"250,60"}
