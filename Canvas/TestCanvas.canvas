@@ -1,0 +1,14 @@
+{
+	"nodes":[
+		{"id":"b376285d53727133","x":-120,"y":-400,"width":250,"height":60,"type":"text","text":"Start Passage"},
+		{"id":"9f3422af8c53a514","x":-120,"y":-280,"width":250,"height":60,"type":"text","text":"Passage Two"},
+		{"id":"fe71985f78a7956d","type":"text","text":"Passage Three","x":-120,"y":-160,"width":250,"height":60},
+		{"id":"4be2e5c7775945b1","type":"text","text":"End Passage","x":-120,"y":-40,"width":250,"height":60}
+	],
+	"edges":[
+		{"id":"5ca12d534e812ac7","fromNode":"b376285d53727133","fromSide":"bottom","toNode":"9f3422af8c53a514","toSide":"top"},
+		{"id":"726a101810a8ded3","fromNode":"fe71985f78a7956d","fromSide":"bottom","toNode":"4be2e5c7775945b1","toSide":"top"},
+		{"id":"421cbdde070a2824","fromNode":"9f3422af8c53a514","fromSide":"bottom","toNode":"fe71985f78a7956d","toSide":"top"},
+		{"id":"a00668f81759e9bd","fromNode":"fe71985f78a7956d","fromSide":"top","toNode":"9f3422af8c53a514","toSide":"bottom"}
+	]
+}
