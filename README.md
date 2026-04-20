@@ -25,7 +25,7 @@ Export Markdown to PDF etc. using pandoc
 
 X `./tweeWebPlay.pl FILE.twee` - play through a basic Twee choice game in a browser
 
-I already sort of implemented in https://github.com/nateProjects/twish
+I already sort of implemented in Twish - see below
 
 X `./tweeImport.pl FILE.md` - import a basic MarkDown file into a Twee choice game
 
