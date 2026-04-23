@@ -14,9 +14,8 @@ my $numPass = 0;
 foreach my $line (@lines) {
     $numPass++ if $line =~ /^## /;
 }
-my $bookNums_str = `./randBookNum.pl $numPass`;
-chomp $bookNums_str;
-my @bookNums = split /,/, $bookNums_str;
+my @nums = (1..$numPass);
+my @bookNums = (shift @nums, shuffle @nums);
 
 # Re-order passages according to BookNums
 my @passages;

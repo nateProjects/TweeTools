@@ -4,6 +4,10 @@ import os
 import sys
 import uuid
 
+# Offset between Twee's passage coordinate system and the Canvas viewport origin
+CANVAS_OFFSET_X = 825
+CANVAS_OFFSET_Y = 725
+
 def read_file(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         return file.read()
@@ -30,7 +34,7 @@ def canvas_to_twee(canvas_json):
         x, y = node['x'], node['y']
         width, height = node['width'], node['height']
 
-        twee_output += f":: {node_text} {{\"position\":\"{x+825},{y+725}\",\"size\":\"{width},{height}\"}}\n"
+        twee_output += f":: {node_text} {{\"position\":\"{x+CANVAS_OFFSET_X},{y+CANVAS_OFFSET_Y}\",\"size\":\"{width},{height}\"}}\n"
         
         if node_id in connections:
             for to_node in connections[node_id]:
@@ -50,28 +54,30 @@ def twee_to_canvas(twee_content):
     edges = []
     node_id_map = {}  # Map to store node titles and their corresponding random IDs
     
+    passage_links = []
+
     for passage in passages:
         if passage.startswith('StoryTitle') or passage.startswith('StoryData'):
             continue
-        
+
         lines = passage.split('\n')
         title_and_metadata = lines[0].split('{')
         title = title_and_metadata[0].strip()
-        
+
         if len(title_and_metadata) > 1:
             try:
                 metadata = json.loads('{' + title_and_metadata[1])
                 position = metadata['position'].split(',')
                 size = metadata['size'].split(',')
-                x, y = int(position[0]) - 825, int(position[1]) - 725  # Adjust for the offset
+                x, y = int(position[0]) - CANVAS_OFFSET_X, int(position[1]) - CANVAS_OFFSET_Y
                 width, height = map(int, size)
             except (json.JSONDecodeError, KeyError, ValueError) as e:
                 print(f"Warning: Error parsing metadata for passage '{title}'. Using default values. Error: {e}")
-                x, y, width, height = 0, 0, 250, 60  # Default values
+                x, y, width, height = 0, 0, 250, 60
         else:
-            x, y, width, height = 0, 0, 250, 60  # Default values
-        
-        node_id = str(uuid.uuid4())[:14]  # Generate a random ID (first 14 characters of a UUID)
+            x, y, width, height = 0, 0, 250, 60
+
+        node_id = str(uuid.uuid4())
         node_id_map[title] = node_id
         nodes.append({
             "id": node_id,
@@ -82,14 +88,14 @@ def twee_to_canvas(twee_content):
             "type": "text",
             "text": title
         })
-        
-        # Find links in the passage content
-        for line in lines[1:]:
-            links = re.findall(r'\[\[(.*?)\]\]', line)
-            for link in links:
+        passage_links.append((title, node_id, lines[1:]))
+
+    for title, node_id, content_lines in passage_links:
+        for line in content_lines:
+            for link in re.findall(r'\[\[(.*?)\]\]', line):
                 if link in node_id_map:
                     edges.append({
-                        "id": f"edge_{uuid.uuid4().hex[:14]}",
+                        "id": f"edge_{uuid.uuid4().hex}",
                         "fromNode": node_id,
                         "toNode": node_id_map[link],
                         "fromSide": "bottom",
@@ -97,7 +103,7 @@ def twee_to_canvas(twee_content):
                     })
                 else:
                     print(f"Warning: Link '{link}' in passage '{title}' does not correspond to any existing passage.")
-    
+
     return json.dumps({"nodes": nodes, "edges": edges}, indent=2)
 
 def main():

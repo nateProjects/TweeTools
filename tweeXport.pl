@@ -24,12 +24,12 @@ for my $line (@lines) {
     if ($line =~ /^:: (.+)$/) {
         $current_passage = $1;
         $passages{$current_passage} = { description => '', choices => [], number => ++$number_counter }; # Increment counter for each passage
-    } elsif ($line =~ /\[(.+?)\]/) {
+    } elsif (defined $current_passage && $line =~ /\[\[(.+?)\]\]/) {
         my $link = $1;
         my ($display_text, $passage_link) = $link =~ /\|/ ? split(/\|/, $link) :
                                              $link =~ /->/ ? split(/->/, $link) : ($link, $link);
         push @{$passages{$current_passage}->{choices}}, [$display_text, $passage_link];
-    } else {
+    } elsif (defined $current_passage) {
         $passages{$current_passage}->{description} .= $line;
     }
 }
@@ -45,7 +45,7 @@ for my $passage (sort { $passages{$a}->{number} <=> $passages{$b}->{number} } ke
     for my $choice (@{$passages{$passage}->{choices}}) {
         my $link_text = $choice->[0];
         my $link_target = $choice->[1];
-        my $link_number = $passages{$link_target =~ /\|(.+)/ ? $1 : $link_target =~ /->(.+)/ ? $1 : $link_target}->{number};
+        my $link_number = $passages{$link_target}->{number};
         print $md_fh "**Go to $link_text - Page $link_number**\n\n";
     }
 }

@@ -31,33 +31,43 @@ let currentTitle = 'Title1';
 // Object to store variables
 const variables = {};
 
+function parseValue(str) {
+    const s = str.trim();
+    if (s === 'true') return true;
+    if (s === 'false') return false;
+    const n = Number(s);
+    if (s !== '' && !isNaN(n)) return n;
+    if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'"))) {
+        return s.slice(1, -1);
+    }
+    return s;
+}
+
 // Function to process commands
 function processCommands(text) {
     const regex = /<<(.+?)>>/g;
     return text.replace(regex, (match, command) => {
       const parts = command.split(' ');
-      const action = parts[0];
-  
+      const action = parts[0].toLowerCase();
+
       if (action === 'set') {
         const variableName = parts[1];
-        const value = eval(parts.slice(3).join(' '));
+        const value = parseValue(parts.slice(3).join(' '));
         variables[variableName] = value;
         return '';
       } else if (action === 'if') {
         const variableName = parts[1];
-        const condition = parts[3];
-        const value = eval(parts.slice(4).join(' '));
-        if ((variables[variableName] && condition === 'is' && variables[variableName] === value) ||
-            (!variables[variableName] && condition === 'is' && value === 'false')) {
-          return parts.slice(5).join(' ');
-        } else {
-          return '';
+        const operator = parts[2];
+        const value = parseValue(parts.slice(3).join(' '));
+        if (operator === 'is' && variables[variableName] === value) {
+          return parts.slice(4).join(' ');
         }
+        return '';
       } else if (action.startsWith('$')) {
         const variableName = action;
-        return variables[variableName] || '';
+        return variables[variableName] !== undefined ? String(variables[variableName]) : '';
       }
-  
+
       return '';
     });
   }

@@ -28,12 +28,12 @@ for my $line (@lines) {
         $current_passage = $1;
         $passages{$current_passage} = { description => '', choices => [] };
         $choice_count = 1;
-    } elsif ($line =~ /\[(.+?)\]/) {
+    } elsif (defined $current_passage && $line =~ /\[\[(.+?)\]\]/) {
         my $link = $1;
         my ($display_text, $passage_link) = $link =~ /\|/ ? split(/\|/, $link) :
                                              $link =~ /->/ ? split(/->/, $link) : ($link, $link);
         push @{$passages{$current_passage}->{choices}}, [$choice_count++, $display_text, $passage_link];
-    } else {
+    } elsif (defined $current_passage) {
         $passages{$current_passage}->{description} .= $line;
     }
 }
@@ -41,12 +41,11 @@ for my $line (@lines) {
 # Randomize passage numbers if bookNums is true
 my %randomized_numbers;
 if ($bookNums) {
-    my $num_passages = keys %passages;
-    my $randomized_output = `./randBookNum.pl $num_passages`;
-    chomp $randomized_output;
-    my @shuffled_numbers = split /,/, $randomized_output;
+    my @passage_keys = keys %passages;
+    my @nums = (1..scalar @passage_keys);
+    my @shuffled_numbers = (shift @nums, shuffle @nums);
     my $i = 0;
-    for my $passage (keys %passages) {
+    for my $passage (@passage_keys) {
         $randomized_numbers{$passage} = $shuffled_numbers[$i++];
     }
 }
@@ -63,7 +62,7 @@ while (1) {
     for my $choice (@{$passages{$passage}->{choices}}) {
         my $choice_number = $choice->[0];
         if ($bookNums) {
-            $choice_number = $randomized_numbers{$choice->[2] =~ /\|(.+)/ ? $1 : $choice->[2] =~ /->(.+)/ ? $1 : $choice->[2]};
+            $choice_number = $randomized_numbers{$choice->[2]};
         }
         push @choices_display, "$choice_number. $choice->[1]";
     }
@@ -76,10 +75,10 @@ while (1) {
     for my $link (@{$passages{$passage}->{choices}}) {
         my $choice_number = $link->[0];
         if ($bookNums) {
-            $choice_number = $randomized_numbers{$link->[2] =~ /\|(.+)/ ? $1 : $link->[2] =~ /->(.+)/ ? $1 : $link->[2]};
+            $choice_number = $randomized_numbers{$link->[2]};
         }
         if ($choice_number == $choice) {
-            $passage = $link->[2] =~ /\|(.+)/ ? $1 : $link->[2] =~ /->(.+)/ ? $1 : $link->[2];
+            $passage = $link->[2];
             $found = 1;
             last;
         }

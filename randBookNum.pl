@@ -6,6 +6,7 @@ use List::Util 'shuffle';
 
 # Read the number of passages
 my $num_passages = $ARGV[0] or die "Usage: $0 <number_of_passages>\n";
+die "Error: argument must be a positive integer\n" unless $num_passages =~ /^\d+$/ && $num_passages > 0;
 
 # Create an array of passage numbers
 my @numbers = (1..$num_passages);
