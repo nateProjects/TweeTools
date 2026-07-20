@@ -9,6 +9,8 @@ Shuffle Twee game passages for book usage
 
 [Export Twee to Canvas](Canvas) format or Canvas format to Twee
 
+For converting Twee to HTML consider [TweeGo](https://github.com/tmedwards/tweego) or [StoryLoom](https://github.com/LoSquadrato/StoryLoom) or [ExTwee](https://github.com/videlais/extwee)
+
 ## Scripts -
 
 `./tweePlay.pl FILE.twee` - play through a basic Twee choice game from the commandline
